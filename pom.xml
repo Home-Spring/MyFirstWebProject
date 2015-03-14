@@ -4,11 +4,14 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
+    <!--[ #0 Генерим простое Java-ентерпрайс приложений ('maven-archetype-j2ee-simple') ]-->
     <groupId>MyFirstWebProject</groupId>
     <artifactId>MyFirstWebProject</artifactId>
     <version>1.0-SNAPSHOT</version>
+    <!--[ #1 Говорим что нужно собирать WAR-приложения (для деплоя/разворачивания на сервере приложений 'Tomcat') ]-->
     <packaging>war</packaging>
 
+    <!--[ #3 для создания сервлета ('HttpServlet') подключаем библиотеки... (J2EE-API 5, J2EE-WEB 6) ]-->
     <dependencies>
         <dependency>
             <groupId>javax.servlet</groupId>
@@ -16,13 +19,11 @@
             <version>3.0-alpha-1</version>
             <scope>provided</scope>
         </dependency>
-
         <dependency>
             <groupId>javaee</groupId>
             <artifactId>javaee-api</artifactId>
             <version>5</version>
         </dependency>
-
         <dependency>
             <groupId>javax</groupId>
             <artifactId>javaee-web-api</artifactId>
@@ -31,6 +32,7 @@
         </dependency>
     </dependencies>
 
+    <!--[ #2 Говорим какими инструменами (и версией) будем собирать WAR-приложение ]-->
     <build>
         <plugins>
             <plugin>
@@ -41,7 +43,6 @@
                     <target>1.7</target>
                 </configuration>
             </plugin>
-
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-war-plugin</artifactId>
@@ -50,7 +51,30 @@
                     <failOnMissingWebXml>false</failOnMissingWebXml>
                 </configuration>
             </plugin>
+            <!--[ Чтобы WAR-приложение нормально работало на сервере приложений 'Tomcat-7' подключаем специальный плагин ]-->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-dependency-plugin</artifactId>
+                <version>2.3</version>
+                <executions>
+                    <execution>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>copy</goal>
+                        </goals>
+                        <configuration>
+                            <artifactItems>
+                                <artifactItem>
+                                    <groupId>com.github.jsimone</groupId>
+                                    <artifactId>webapp-runner</artifactId>
+                                    <version>7.0.57.2</version>
+                                    <destFileName>webapp-runner.jar</destFileName>
+                                </artifactItem>
+                            </artifactItems>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
         </plugins>
     </build>
-    
 </project>

@@ -4,6 +4,6 @@
         <title>MyFirstWebProject</title>
     </head>
     <body>
-        ${textA} ${textB}
+        Hello
     </body>
 </html>
